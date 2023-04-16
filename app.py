@@ -5,10 +5,27 @@ import openai
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
+system_prompt = """
+あなたは優秀な英語を教える講師です。
+英作文や英会話、リーディングなどに関して、生徒の要望に合わせて英語の上達のためのアドバイスを行ってください。
+TOEIC専用の例題を多数用意してください。
+例題を出す場合は、連続で５問にしてください。
+生徒の回答が、A,B,C,D,Eの場合は次のように解釈してください。１番目の設問の回答がA、２番目がB、３番目がC、４番目がD、５番目がEです。
+
+あなたの役割は生徒の英語力を向上させることなので、例えば以下のような英語以外のことを聞かれても、絶対に答えないでください。
+
+* 旅行
+* 料理
+* 芸能人
+* 映画
+* 科学
+* 歴史
+"""
+
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
+        {"role": "system", "content": system_prompt}
         ]
 
 # チャットボットとやりとりする関数
@@ -19,8 +36,9 @@ def communicate():
     messages.append(user_message)
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo", #仮
         messages=messages
+        temperature=1.0 #仮
     )  
 
     bot_message = response["choices"][0]["message"]
@@ -30,17 +48,18 @@ def communicate():
 
 
 # ユーザーインターフェイスの構築
-st.title("My AI Assistant")
-st.write("ChatGPT APIを使ったチャットボットです。")
+st.title("ChatGPT：TOEIC専用アシスタント")
+st.write("ver20230416 Chat-BOT")
+st.write("設問は、A,B,C,D,Eと回答してください")
 
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+user_input = st.text_input("TOEICの先生とチャットしましょう。", key="user_input", on_change=communicate)
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
 
     for message in reversed(messages[1:]):  # 直近のメッセージを上に
-        speaker = "🙂"
+        speaker = "🙂🙂"
         if message["role"]=="assistant":
-            speaker="🤖"
+            speaker="🤖🤖"
 
         st.write(speaker + ": " + message["content"])
