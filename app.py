@@ -52,7 +52,7 @@ st.title("ChatGPT：TOEIC専用アシスタント")
 st.write("ver20230416 Chat-BOT")
 st.write("設問、回答、英単語の事例　などと質問してください")
 
-user_input = st.text_input("TOEICの先生とチャットしましょう。", key="user_input", on_change=communicate)
+user_input = st.text_input("TOEICアシスタントとチャットしましょう。", key="user_input", on_change=communicate)
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
