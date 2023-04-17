@@ -50,7 +50,7 @@ def communicate():
 
 # ユーザーインターフェイスの構築
 st.title("TOEIC専用アシスタント")
-st.write("ver20230416 ChatGPT　model="gpt-3.5-turbo",　temperature=1.0")
+st.write("ver20230416 ChatGPT　model=gpt-3.5-turbo,temperature=1.0")
 st.write("設問、回答、英単語の事例　などと質問してください")
 
 user_input = st.text_input("TOEICアシスタントとチャットしましょう。", key="user_input", on_change=communicate)
